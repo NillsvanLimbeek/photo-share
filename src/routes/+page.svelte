@@ -1,2 +1,15 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<script lang="ts">
+	import { supabase } from '$lib/supabase';
+
+	async function fetchBucket() {
+		const { data, error } = await supabase.storage.from('photos').list();
+
+		if (error) {
+			console.error(error);
+		} else {
+			return data;
+		}
+	}
+</script>
+
+<button class="btn" on:click={fetchBucket}>Fetch</button>
