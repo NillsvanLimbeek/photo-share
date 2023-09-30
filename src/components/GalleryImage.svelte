@@ -19,7 +19,7 @@
 			imageUrl = url;
 		} catch (error) {
 			if (error instanceof Error) {
-				console.log('Error downloading image: ', error.message);
+				console.error('Error downloading image: ', error.message);
 			}
 		}
 	}
@@ -29,14 +29,9 @@
 
 {#if imageUrl}
 	<img
+		class="object-cover"
 		src={imageUrl}
 		alt={imageUrl ? 'Avatar' : 'No image'}
 		style="height: {size}px; width: {size}px"
 	/>
 {/if}
-
-<style>
-	img {
-		object-fit: cover;
-	}
-</style>
