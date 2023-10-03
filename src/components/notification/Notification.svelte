@@ -18,7 +18,7 @@
 </script>
 
 <div
-	class="fixed top-0 left-[50%] translate-x-[-50%] z-10"
+	class="fixed top-0 left-[50%] -translate-x-[50%] z-10"
 	in:fly={{ y: -150, duration: 450 }}
 	out:fade={{ duration: 200 }}
 >
