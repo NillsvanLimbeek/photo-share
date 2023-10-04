@@ -1,23 +1,17 @@
 import type { User } from '@supabase/supabase-js';
-import { derived, writable } from 'svelte/store';
+import { writable } from 'svelte/store';
 
 import { supabase } from '$lib/supabase';
 
-interface AuthState {
-	user: User | null;
-}
-
 function createAuthService() {
-	const store = writable<AuthState>();
-	const { set } = store;
-
-	const user = derived(store, (store) => store.user);
+	const store = writable<User | null>();
+	const { set, subscribe } = store;
 
 	supabase.auth.onAuthStateChange((event) => {
 		if (event === 'SIGNED_IN') {
 			getUser();
 		} else {
-			set({ user: null });
+			set(null);
 		}
 	});
 
@@ -29,7 +23,8 @@ function createAuthService() {
 				throw error;
 			}
 
-			set({ user: data.user });
+			set(data.user);
+			return data.user;
 		} catch (error) {
 			console.error(error);
 		}
@@ -98,7 +93,8 @@ function createAuthService() {
 	}
 
 	return {
-		user,
+		subscribe,
+		getUser,
 		signIn,
 		signUp,
 		resetPassword,
