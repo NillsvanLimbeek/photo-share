@@ -4,12 +4,13 @@
 	export let supabase: SupabaseClient;
 	export let url: string;
 	export let size: number;
+	export let bucket: string;
 
 	let imageUrl: string | undefined;
 
 	async function downloadImage(path: string) {
 		try {
-			const { data, error } = await supabase.storage.from('photos').download(path);
+			const { data, error } = await supabase.storage.from(bucket).download(path);
 
 			if (error) {
 				throw error;

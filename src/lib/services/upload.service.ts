@@ -20,28 +20,32 @@ function createUploadService() {
 		}
 	}
 
-	async function pickImages() {
+	async function pickImages(bucketName: string | null) {
+		if (!bucketName) raise('No bucket name provided');
+
 		const images = await Camera.pickImages({});
 
 		images.photos.forEach(async (image) => {
 			const file = await fetchFromLocalFileSystem(image);
-			uploadToStorage(file);
+			uploadToStorage(file, bucketName);
 		});
 	}
 
-	async function takePicture() {
+	async function takePicture(bucketName: string | null) {
+		if (!bucketName) raise('No bucket name provided');
+
 		const photo = await Camera.getPhoto({
 			resultType: CameraResultType.Uri
 		});
 
 		const file = await fetchFromLocalFileSystem(photo);
-		uploadToStorage(file);
+		uploadToStorage(file, bucketName);
 	}
 
-	async function uploadToStorage(file: File) {
+	async function uploadToStorage(file: File, bucketName: string) {
 		try {
 			transition('LOADING');
-			const { error } = await supabase.storage.from('photos').upload(file.name, file);
+			const { error } = await supabase.storage.from(bucketName).upload(file.name, file);
 
 			if (error) throw error;
 
