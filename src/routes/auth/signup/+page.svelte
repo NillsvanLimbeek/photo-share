@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { authService } from '$lib/services/auth.service';
+	import AuthBox from '../../../components/AuthBox.svelte';
 	import Input from '../../../components/input/Input.svelte';
 
 	const { signUp } = authService;
@@ -9,12 +10,15 @@
 	let email = '';
 	let password = '';
 
+	let error = false;
+
 	async function handleSubmit() {
 		const res = await signUp(name, email, password);
 
 		if (res instanceof Error) {
 			// TODO: Show error message
 			console.error(res.message);
+			error = true;
 			return;
 		}
 
@@ -23,6 +27,10 @@
 </script>
 
 <div class="w-full h-full flex justify-center items-center">
+	{#if error}
+		<AuthBox userAlreadyExcist />
+	{/if}
+
 	<form class="flex flex-col gap-4 w-1/3" on:submit|preventDefault={handleSubmit}>
 		<Input
 			required
