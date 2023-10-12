@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { authService } from '$lib/services/auth.service';
+	import Input from '../../../components/input/Input.svelte';
 
 	const { signIn } = authService;
 
@@ -22,12 +23,21 @@
 
 <div class="w-full h-full flex justify-center items-center">
 	<form class="flex flex-col gap-4 w-1/3" on:submit|preventDefault={handleSubmit}>
-		<input type="email" class="input input-bordered" placeholder="Email" bind:value={email} />
-		<input
+		<Input
+			required
+			value={email}
+			type="email"
+			placeholder="Email"
+			icon="envelope"
+			on:input={(e) => (email = e.detail)}
+		/>
+		<Input
+			required
+			value={password}
 			type="password"
-			class="input input-bordered"
 			placeholder="Password"
-			bind:value={password}
+			icon="key"
+			on:input={(e) => (password = e.detail)}
 		/>
 		<a href="/auth/forgotpassword" class="text-sm link text-right mb-2">Forgot password?</a>
 
