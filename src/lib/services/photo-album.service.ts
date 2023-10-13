@@ -72,12 +72,30 @@ function createPhotoAlbumService() {
 		return data.filter((photo) => !photo.name.includes('empty'));
 	}
 
+	async function downloadImage(path: string, bucket: string): Promise<string> {
+		try {
+			const { data, error } = await supabase.storage.from(bucket).download(path);
+
+			if (error) {
+				throw error;
+			}
+
+			return URL.createObjectURL(data);
+		} catch (error) {
+			if (error instanceof Error) {
+				throw error;
+			}
+
+			throw new Error('Error downloading image');
+		}
+	}
 	return {
 		fetchPhotoAlbum,
 		createBucket,
 		fetchPhotoAlbums,
 		createPhotoAlbum,
-		fetchPhotos
+		fetchPhotos,
+		downloadImage
 	};
 }
 
