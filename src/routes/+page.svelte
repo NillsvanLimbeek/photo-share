@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { photoGalleryService } from '$lib/services/photo-gallery.service';
+	import { photoAlbumService } from '$lib/services/photo-album.service';
 
-	const { createPhotoAlbum, readPhotoAlbums } = photoGalleryService;
+	const { createPhotoAlbum, fetchPhotoAlbums } = photoAlbumService;
 
 	let bucketName = '';
 </script>
@@ -15,7 +15,7 @@
 		<button class="btn">Create Photo Album</button>
 	</form>
 
-	{#await readPhotoAlbums()}
+	{#await fetchPhotoAlbums()}
 		<h1>Loading...</h1>
 	{:then albums}
 		<ul class="flex items-center flex-col">

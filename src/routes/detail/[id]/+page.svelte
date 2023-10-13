@@ -1,15 +1,15 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { photoGalleryService } from '$lib/services/photo-gallery.service';
+	import { photoAlbumService } from '$lib/services/photo-album.service';
 	import { supabase } from '$lib/supabase';
 
-	import GalleryImage from '../../../components/GalleryImage.svelte';
+	import AlbumImage from '../../../components/AlbumImage.svelte';
 	import QrCode from '../../../components/QrCode.svelte';
 
-	const { fetchPhotoGallery, fetchPhotos } = photoGalleryService;
+	const { fetchPhotoAlbum, fetchPhotos } = photoAlbumService;
 
 	async function fetchAll() {
-		const gallery = await fetchPhotoGallery($page.params.id);
+		const gallery = await fetchPhotoAlbum($page.params.id);
 		const photos = await fetchPhotos(gallery.bucket_name);
 
 		return { gallery, photos };
@@ -26,7 +26,7 @@
 
 		<div class="grid grid-cols-3 gap-5 p-10">
 			{#each data.photos as photo}
-				<GalleryImage {supabase} url={photo.name} bucket={data.gallery.bucket_name} size={250} />
+				<AlbumImage {supabase} url={photo.name} bucket={data.gallery.bucket_name} size={250} />
 			{/each}
 		</div>
 	</div>
