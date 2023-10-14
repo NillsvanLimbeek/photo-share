@@ -5,7 +5,7 @@
 	import { page } from '$app/stores';
 	import { photoAlbumService } from '$lib/services/photo-album.service';
 
-	import QrCode from '../../../components/QrCode.svelte';
+	import QrCode from '../../../../components/QrCode.svelte';
 
 	const { fetchPhotoAlbum, fetchPhotos, downloadImage } = photoAlbumService;
 
