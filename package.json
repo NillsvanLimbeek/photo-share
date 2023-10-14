@@ -45,6 +45,7 @@
 		"@capacitor/camera": "^5.0.7",
 		"@ionic/pwa-elements": "^3.2.2",
 		"@supabase/supabase-js": "^2.36.0",
+		"@tanstack/svelte-query": "^4.36.1",
 		"daisyui": "^3.8.1",
 		"qrcode": "^1.5.3",
 		"uuid": "^9.0.1",

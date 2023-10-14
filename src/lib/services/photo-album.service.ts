@@ -1,4 +1,5 @@
 import { get } from 'svelte/store';
+import { createMutation, createQuery } from '@tanstack/svelte-query';
 
 import { supabase } from '$lib/supabase';
 import { kebabCase, raise } from '$lib/utils';
@@ -6,6 +7,12 @@ import { authService } from './auth.service';
 import { PhotoAlbumSchema, type PhotoAlbum, PhotoAlbumsSchema } from '$lib/models/PhotoAlbum';
 
 function createPhotoAlbumService() {
+	/**
+	 * Fetches a photo album by its ID.
+	 * @param id - The ID of the photo album to fetch.
+	 * @returns A promise that resolves with the fetched photo album.
+	 * @throws An error if there was an error fetching the photo album or if the fetched data is invalid.
+	 */
 	async function fetchPhotoAlbum(id: string): Promise<PhotoAlbum> {
 		const { data, error } = await supabase.from('photo_albums').select('*').eq('id', id).single();
 
@@ -19,6 +26,19 @@ function createPhotoAlbumService() {
 		}
 
 		return result.data;
+	}
+
+	/**
+	 * Returns a query object for fetching a photo album by ID.
+	 * @param id - The ID of the photo album to fetch.
+	 * @returns A query object with the photo album data and error, if any.
+	 */
+	function useFetchPhotoAlbum(id: string) {
+		return createQuery<PhotoAlbum, Error>({
+			queryKey: ['photo-album', id],
+			queryFn: () => fetchPhotoAlbum(id),
+			enabled: !!id
+		});
 	}
 
 	async function createBucket(bucketName: string): Promise<void> {
@@ -55,6 +75,13 @@ function createPhotoAlbumService() {
 		return result.data;
 	}
 
+	function useFetchPhotoAlbums() {
+		return createQuery<PhotoAlbum[], Error>({
+			queryKey: ['photo-albums'],
+			queryFn: fetchPhotoAlbums
+		});
+	}
+
 	async function createPhotoAlbum(bucketName: string): Promise<void> {
 		try {
 			await createBucket(bucketName);
@@ -64,12 +91,27 @@ function createPhotoAlbumService() {
 		}
 	}
 
+	function useCreatePhotoAlbum() {
+		return createMutation({
+			mutationKey: ['create-photo-album'],
+			mutationFn: (bucketName: string) => createPhotoAlbum(bucketName)
+		});
+	}
+
 	async function fetchPhotos(bucketName: string) {
 		const { data, error } = await supabase.storage.from(bucketName).list();
 
 		if (error) raise(`${error.message}}`);
 
 		return data.filter((photo) => !photo.name.includes('empty'));
+	}
+
+	function useFetchPhotos(bucketName: string) {
+		return createQuery({
+			queryKey: ['photos', bucketName],
+			queryFn: () => fetchPhotos(bucketName),
+			enabled: !!bucketName
+		});
 	}
 
 	async function downloadImage(path: string, bucket: string): Promise<string> {
@@ -90,12 +132,11 @@ function createPhotoAlbumService() {
 		}
 	}
 	return {
-		fetchPhotoAlbum,
-		createBucket,
-		fetchPhotoAlbums,
-		createPhotoAlbum,
-		fetchPhotos,
-		downloadImage
+		downloadImage,
+		useFetchPhotoAlbums,
+		useCreatePhotoAlbum,
+		useFetchPhotos,
+		useFetchPhotoAlbum
 	};
 }
 
