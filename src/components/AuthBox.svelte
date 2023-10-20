@@ -5,7 +5,7 @@
 </script>
 
 <div
-	class="absolute top-[15rem] flex justify-center items-center mb-14 w-1/3 py-3 rounded border {success
+	class="absolute top-[-7rem] flex justify-center items-center py-3 rounded border w-full {success
 		? 'border-green-400 bg-green-100'
 		: 'border-red-400 bg-red-100'}"
 >

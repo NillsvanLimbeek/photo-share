@@ -27,16 +27,16 @@
 	}
 </script>
 
-<div class="relative w-full h-full flex flex-col justify-center items-center">
-	{#if $page.url.searchParams.get('success')}
-		<AuthBox success />
-	{/if}
+<div class="h-full flex items-center mx-auto px-5 max-w-xs sm:w-1/2 md:max-w-md">
+	<form class="relative flex flex-col gap-4 w-full" on:submit|preventDefault={handleSubmit}>
+		{#if $page.url.searchParams.get('success')}
+			<AuthBox success />
+		{/if}
 
-	{#if error}
-		<AuthBox invalidCredentials />
-	{/if}
+		{#if error}
+			<AuthBox invalidCredentials />
+		{/if}
 
-	<form class="flex flex-col gap-4 w-1/3" on:submit|preventDefault={handleSubmit}>
 		<Input
 			required
 			value={email}

@@ -10,7 +10,7 @@
 	let email = '';
 	let password = '';
 
-	let error = false;
+	let error = true;
 
 	async function handleSubmit() {
 		const res = await signUp(name, email, password);
@@ -26,12 +26,12 @@
 	}
 </script>
 
-<div class="w-full h-full flex justify-center items-center">
-	{#if error}
-		<AuthBox userAlreadyExcist />
-	{/if}
+<div class="h-full flex items-center mx-auto px-5 max-w-xs sm:w-1/2 md:max-w-md">
+	<form class=" relative flex flex-col gap-4 w-full" on:submit|preventDefault={handleSubmit}>
+		{#if error}
+			<AuthBox userAlreadyExcist />
+		{/if}
 
-	<form class="flex flex-col gap-4 w-1/3" on:submit|preventDefault={handleSubmit}>
 		<Input
 			required
 			type="text"
