@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { photoAlbumService } from '$lib/services/photo-album.service';
+	import { prettyTitle } from '$lib/utils';
 
 	const { useCreatePhotoAlbum, useFetchPhotoAlbums } = photoAlbumService;
 
@@ -25,7 +26,7 @@
 	{:else}
 		<ul class="flex items-center flex-col">
 			{#each $photoAlbumsQuery.data as album}
-				<a href="detail/{album.id}" class="btn btn-wide mb-3">{album.bucket_name}</a>
+				<a href="detail/{album.id}" class="btn btn-wide mb-3">{prettyTitle(album.bucket_name)}</a>
 			{/each}
 		</ul>
 	{/if}

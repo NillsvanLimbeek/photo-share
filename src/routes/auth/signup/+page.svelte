@@ -10,7 +10,7 @@
 	let email = '';
 	let password = '';
 
-	let error = true;
+	let error = false;
 
 	async function handleSubmit() {
 		const res = await signUp(name, email, password);

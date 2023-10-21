@@ -1,11 +1,9 @@
 <script>
 	import '../../app.postcss';
+	import Header from '../../components/Header.svelte';
 </script>
 
 <main class="">
-	<nav>
-		<a href="/">Home</a>
-	</nav>
-
+	<Header />
 	<slot />
 </main>

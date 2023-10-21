@@ -3,8 +3,9 @@
 
 	import { page } from '$app/stores';
 	import { photoAlbumService } from '$lib/services/photo-album.service';
+	import { prettyTitle } from '$lib/utils';
 
-	import QrCode from '../../../../components/QrCode.svelte';
+	import Icon from '../../../../components/icon/Icon.svelte';
 
 	const { useFetchPhotoAlbum, useFetchPhotos, downloadImage } = photoAlbumService;
 	const photoAlbumQuery = useFetchPhotoAlbum($page.params.id);
@@ -31,17 +32,21 @@
 	<!-- TODO error state -->
 	<h1>Error: {$photoAlbumQuery.error.message}</h1>
 {:else}
-	<div class="flex flex-col justify-center w-full mt-10">
-		<div class="flex flex-col w-1/3 mx-auto justify-center">
-			<QrCode
-				url="{import.meta.env.VITE_BASE_URL}/upload?bucket={$photoAlbumQuery.data.bucket_name}"
-			/>
-		</div>
+	<div class="flex w-full justify-between items-center px-5 border py-3">
+		<h1>{prettyTitle($photoAlbumQuery.data.bucket_name)}</h1>
+		<a href="/detail/{$page.params.id}/share" class="btn">
+			<span class="mr-5">Share</span>
+			<Icon name="qr" props={{ size: '30' }} />
+		</a>
 	</div>
 {/if}
 
 {#if images.length > 0}
-	<Gallery items={images} class="w-full gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-4" let:item>
+	<Gallery
+		items={images}
+		class="w-full gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-4 p-5"
+		let:item
+	>
 		<div class="relative w-full pb-[100%] overflow-hidden">
 			<img src={item.src} alt={item.alt} class="absolute w-full h-full object-cover rounded-lg" />
 		</div>
