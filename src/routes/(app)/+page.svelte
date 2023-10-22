@@ -8,12 +8,21 @@
 	const createPhotoAlbumMutation = useCreatePhotoAlbum();
 
 	let bucketName = '';
+
+	function handleSubmit() {
+		$createPhotoAlbumMutation.mutate(bucketName, {
+			onSuccess: () => {
+				$photoAlbumsQuery.refetch();
+				bucketName = '';
+			}
+		});
+	}
 </script>
 
-<div class="flex flex-col mt-10 w-2/3 mx-auto">
+<div class="flex flex-col mt-10 w-full mx-auto">
 	<form
-		class="flex justify-center items-center gap-5 mb-10"
-		on:submit={() => $createPhotoAlbumMutation.mutate(bucketName)}
+		class="flex justify-center items-center gap-5 mb-10 flex-col w-full"
+		on:submit={handleSubmit}
 	>
 		<input type="text" class="input input-bordered" bind:value={bucketName} required />
 		<button class="btn">Create Photo Album</button>
