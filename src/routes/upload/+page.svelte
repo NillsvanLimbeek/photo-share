@@ -2,7 +2,7 @@
 	import { page } from '$app/stores';
 	import { uploadService } from '$lib/services/upload.service';
 
-	import Spinner from '../../../components/Spinner.svelte';
+	import Spinner from '../../components/Spinner.svelte';
 
 	const bucketName = $page.url.searchParams.get('bucket');
 	const { state, pickImages, takePicture } = uploadService;
